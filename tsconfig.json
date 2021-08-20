@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "target": "es2019",
+    "outDir": "./build",
+    "paths": {
+      "~/*": ["src/*"]
+    },
+    "sourceMap": true
+  }
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Authenticated</title>
+</head>
+
+<body>
+  <script>
+    window.opener.postMessage({
+      id: '<%= id %>',
+      ok: false,
+      mode: '<%= mode %>',
+      name: '<%= name %>',
+      discrim: '<%= discrim?discrim:"" %>',
+    }, '<%= clientUrl %>');
+
+    window.close();
+  </script>
+</body>
+
+</html>
