@@ -4,7 +4,7 @@ import config from '~/config'
 import { getConnection } from './packages/database'
 import server from './server'
 
-const PORT = config.SERVER_PORT || '3000'
+const PORT = process.env.PORT || config.SERVER_PORT || '3000'
 
 async function onStart():Promise<void> {
   
