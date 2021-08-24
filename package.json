@@ -5,7 +5,7 @@
   "main": "build/src/index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc -p . & cp -r ./src/views ./build/src",
+    "build": "tsc -p . && mkdir ./build/src &&  cp -r ./src/views ./build/src",
     "start": "ts-node -r tsconfig-paths/register ./build/src/index.js",
     "lint": "eslint . --ext .ts",
     "migration:create": "cross-env NODE_ENV=local npm run typeorm -- migration:create -n",
