@@ -23,6 +23,7 @@ export class createUsersTable1629325891111 implements MigrationInterface {
             {
               name: 'name',
               type: 'varchar',
+              isNullable: true,
             },
             {
               name: 'firstname',

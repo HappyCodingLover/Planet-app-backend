@@ -519,3 +519,6 @@
 [0mPOST /api/scammers/evaluate [31m500[0m 239.113 ms - 49[0m
 [0mPOST /api/auth/register [31m500[0m 1400.979 ms - 1039[0m
 [0mPOST /api/auth/register [31m500[0m 189.979 ms - 1039[0m
+[0mPOST /api/auth/register [31m500[0m 470.358 ms - 2[0m
+[0mPOST /api/auth/register [31m500[0m 300.653 ms - 2[0m
+[0mGET /api/auth/login [33m404[0m 3.598 ms - 153[0m

@@ -9,6 +9,7 @@ import * as jwt from 'jsonwebtoken'
 export const register = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     const data = req.body
+    console.log('__data', data)
     data.password = bcrypt.hashSync(data.password, 10)
     const exists = await getConnection()
       .getRepository(User)
