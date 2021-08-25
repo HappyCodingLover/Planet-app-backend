@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm'
 import { withTimestampsMigration } from '~/packages/database/helpers/withTimestampsMigration'
 import config from '~/config'
-const tableName = `${config.DB.MAIN_SCHEMA}.products`
-export class createProductsTable1629329142893 implements MigrationInterface {
+const tableName = `${config.DB.MAIN_SCHEMA}.product_images`
+export class createProductImagesTable1629833090034 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table(
@@ -15,26 +15,16 @@ export class createProductsTable1629329142893 implements MigrationInterface {
               type: 'int4',
             },
             {
-              name: 'name_fr',
+              name: 'product_id',
+              type: 'int4',
+            },
+            {
+              name: 'name',
               type: 'varchar',
             },
             {
-              name: 'categoriesSubs_id',
-              type: 'int4',
-            },
-            {
-              name: 'price',
-              type: 'int4',
-            },
-            {
-              name: 'status_id',
-              type: 'int4',
-              isNullable: true,
-            },
-            {
-              name: 'active',
-              type: 'bool',
-              isNullable: true,
+              name: 'url',
+              type: 'varchar',
             },
           ],
           name: tableName,
