@@ -87,9 +87,5 @@
     "prettier": "^2.3.2",
     "supertest": "4.0.2",
     "ts-jest": "26.3.0"    
-  },
-  "engines": {
-    "node": "12.19.1"
-  }
-  
+  } 
 }
