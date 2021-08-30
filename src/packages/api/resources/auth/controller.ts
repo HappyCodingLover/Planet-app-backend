@@ -9,7 +9,6 @@ import * as jwt from 'jsonwebtoken'
 export const register = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   try {
     const data = req.body
-    console.log('__data', data)
     data.password = bcrypt.hashSync(data.password, 10)
     const exists = await getConnection()
       .getRepository(User)
@@ -52,8 +51,18 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     return res.status(httpStatus.OK).send({ success: false, message: 'password mismatch' })
   }
 
-  const token = jwt.sign({ email: foundUser.email, id: foundUser.id, name: foundUser.name }, config.AUTH.TOKEN_SECRET, {
-    expiresIn: config.AUTH.TOKEN_EXPIRATION_TIME,
-  })
+  const token = jwt.sign(
+    {
+      email: foundUser.email,
+      id: foundUser.id,
+      name: foundUser.name,
+      firstname: foundUser.firstname,
+      username: foundUser.username,
+    },
+    config.AUTH.TOKEN_SECRET,
+    {
+      expiresIn: config.AUTH.TOKEN_EXPIRATION_TIME,
+    },
+  )
   res.status(httpStatus.OK).json({ success: true, token: token })
 }
