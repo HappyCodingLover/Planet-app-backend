@@ -3,26 +3,56 @@ import * as httpStatus from 'http-status'
 import { getConnection } from 'typeorm'
 import { Products } from '~/packages/database/models/products'
 import { ProductImages } from '~/packages/database/models/productImages'
+import { Favorite } from '~/packages/database/models/favorite'
+import { Brands } from '~/packages/database/models/brands'
+import { User } from '~/packages/database/models/user'
 
 export const listings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const products = await getConnection().getRepository(Products).find()
+  const { page } = req.body
+  const [products, total] = await getConnection()
+    .getRepository(Products)
+    .findAndCount({ skip: page * 5, take: 5 })
+  console.log('__total', total)
   const arr = await Promise.all(
     products.map(async (product: any) => {
-      console.log('__productId', product.id)
       const productImages = await getConnection()
         .getRepository(ProductImages)
         .createQueryBuilder('productImages')
         .where('productImages.product_id = :id', { id: product.id })
         .getMany()
-      return {...product, images: {productImages}}
+      const favorites = await getConnection()
+        .getRepository(Favorite)
+        .find({
+          where: {
+            id_product: product.id,
+            active: true,
+          },
+        })
+      const brand = await getConnection()
+        .getRepository(Brands)
+        .findOne({
+          where: {
+            id: product.brand_id,
+          },
+        })
+      const user = await getConnection()
+        .getRepository(User)
+        .findOne({
+          where: {
+            id: product.user_id,
+          },
+        })
+
+      return { ...product, images: productImages, favorites: favorites, brand: brand, user: user }
     }),
   )
-  console.log('__arr', arr)
-  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: arr })
+  return res
+    .status(httpStatus.OK)
+    .send({ success: true, message: 'success', data: { data: arr, next: total > (page + 1) * 3 ? page + 1 : -1 } })
 }
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { title, price, categoryId, description, urls } = req.body
+  const { title, price, categoryId, description, brandId, statusId, urls } = req.body
   try {
     const result = await getConnection()
       .createQueryBuilder()
@@ -33,6 +63,8 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
           name_fr: title,
           price: price,
           categoriesSubs_id: categoryId,
+          brand_id: brandId,
+          status_id: statusId,
         },
       ])
       .returning('id')
@@ -53,4 +85,54 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
     console.error(error)
     return res.status(httpStatus.OK).send({ success: false, message: 'failed adding product' })
   }
+}
+
+export const myListings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { userId } = req.body
+  const userProducts = await getConnection()
+    .getRepository(Products)
+    .find({
+      where: {
+        user_id: userId,
+      },
+    })
+  const arr = await Promise.all(
+    userProducts.map(async (product: any) => {
+      const productImages = await getConnection()
+        .getRepository(ProductImages)
+        .createQueryBuilder('productImages')
+        .where('productImages.product_id = :id', { id: product.id })
+        .getMany()
+      const favorites = await getConnection()
+        .getRepository(Favorite)
+        .find({
+          where: {
+            id_product: product.id,
+            active: true,
+          },
+        })
+      const brand = await getConnection()
+        .getRepository(Brands)
+        .findOne({
+          where: {
+            id: product.brand_id,
+          },
+        })
+
+      return { ...product, images: productImages, favorites: favorites, brand: brand }
+    }),
+  )
+  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: arr })
+}
+
+export const userListingsCount = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { userId } = req.body
+  const userProducts = await getConnection()
+    .getRepository(Products)
+    .find({
+      where: {
+        user_id: userId,
+      },
+    })
+  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: userProducts.length })
 }

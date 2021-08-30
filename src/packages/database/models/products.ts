@@ -19,6 +19,12 @@ export class Products extends BaseEntity {
   @Column('int4')
   public status_id: number
 
+  @Column('int4')
+  public brand_id: number
+
+  @Column('int4')
+  public user_id: number
+
   @Column('bool')
   public active: boolean
 
