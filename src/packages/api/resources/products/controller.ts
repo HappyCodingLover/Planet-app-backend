@@ -52,7 +52,7 @@ export const listings = async (req: Request, res: Response, next: NextFunction):
 }
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { title, price, categoryId, description, brandId, statusId, urls } = req.body
+  const { title, price, categoryId, description, brandId, statusId, urls, userId } = req.body
   try {
     const result = await getConnection()
       .createQueryBuilder()
@@ -65,6 +65,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
           categoriesSubs_id: categoryId,
           brand_id: brandId,
           status_id: statusId,
+          user_id: userId
         },
       ])
       .returning('id')
