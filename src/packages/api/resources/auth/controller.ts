@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     return res.status(httpStatus.OK).send({ success: false, message: 'password mismatch' })
   }
 
-  const token = jwt.sign({ email: foundUser.email }, config.AUTH.TOKEN_SECRET, {
+  const token = jwt.sign({ email: foundUser.email, id: foundUser.id, name: foundUser.name }, config.AUTH.TOKEN_SECRET, {
     expiresIn: config.AUTH.TOKEN_EXPIRATION_TIME,
   })
   res.status(httpStatus.OK).json({ success: true, token: token })
