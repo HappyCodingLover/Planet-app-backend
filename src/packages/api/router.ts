@@ -5,6 +5,7 @@ import categoriesRouter from '~/packages/api/resources/categories/index'
 import brandsRouter from '~/packages/api/resources/brands/index'
 import statusRouter from '~/packages/api/resources/product_status/index'
 import favoriteRouter from '~/packages/api/resources/favorite/index'
+import paymentRouter from '~/packages/api/resources/payment/index'
 
 const router = express.Router()
 
@@ -14,5 +15,6 @@ router.use('/api/categories', categoriesRouter)
 router.use('/api/brands', brandsRouter)
 router.use('/api/status', statusRouter)
 router.use('/api/favorite', favoriteRouter)
+router.use('/api/payment', paymentRouter)
 
 export default router
