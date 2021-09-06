@@ -55,7 +55,7 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
 
   const [products, total] = await getConnection()
     .getRepository(Products)
-    .findAndCount({ where: { user_id: userId }, skip: page * 5, take: 5 })
+    .findAndCount({ skip: page * 5, take: 5 })
 
   const favProducts = await Promise.all(
     products.map(async (product: any) => {
