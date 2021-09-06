@@ -53,9 +53,9 @@ export const listings = async (req: Request, res: Response, next: NextFunction):
 export const favListings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { userId, page } = req.body
 
-  const [products, total] = await getConnection()
-    .getRepository(Products)
-    .findAndCount({ skip: page * 5, take: 5 })
+  const [products, total] = await getConnection().getRepository(Products).findAndCount()
+
+  console.log('__products', products)
 
   const favProducts = await Promise.all(
     products.map(async (product: any) => {
@@ -72,9 +72,11 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
       else return null
     }),
   )
+
   const arr = await Promise.all(
     favProducts
       .filter((prod) => prod !== null)
+      .slice(page * 5, (page + 1) * 5)
       .map(async (product: any) => {
         const productImages = await getConnection()
           .getRepository(ProductImages)
@@ -107,6 +109,8 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
         return { ...product, images: productImages, favorites: favorites, brand: brand, user: user }
       }),
   )
+  console.log('__arr', arr)
+
   return res
     .status(httpStatus.OK)
     .send({ success: true, message: 'success', data: { data: arr, next: total > (page + 1) * 3 ? page + 1 : -1 } })
