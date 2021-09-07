@@ -21,10 +21,4 @@ export class Carrier_size extends BaseEntity {
 
   @Column('float4')
   public price: number
-
-  @Column('timestamp with time zone')
-  public created_at: Timestamp
-
-  @Column('timestamp with time zone')
-  public updated_at: Timestamp
 }
