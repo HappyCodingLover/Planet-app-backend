@@ -6,6 +6,7 @@ import { ProductImages } from '~/packages/database/models/productImages'
 import { Favorite } from '~/packages/database/models/favorite'
 import { Brands } from '~/packages/database/models/brands'
 import { User } from '~/packages/database/models/user'
+import { Categories } from '~/packages/database/models/categories'
 
 export const listings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { page } = req.body
@@ -41,8 +42,14 @@ export const listings = async (req: Request, res: Response, next: NextFunction):
             id: product.user_id,
           },
         })
-
-      return { ...product, images: productImages, favorites: favorites, brand: brand, user: user }
+      const category = await getConnection()
+        .getRepository(Categories)
+        .findOne({
+          where: {
+            id: product.categoriesSubs_id,
+          },
+        })
+      return { ...product, images: productImages, favorites: favorites, brand: brand, user: user, category: category }
     }),
   )
   return res
@@ -98,6 +105,13 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
               id: product.brand_id,
             },
           })
+        const category = await getConnection()
+          .getRepository(Categories)
+          .findOne({
+            where: {
+              id: product.categoriesSubs_id,
+            },
+          })
         const user = await getConnection()
           .getRepository(User)
           .findOne({
@@ -106,7 +120,7 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
             },
           })
 
-        return { ...product, images: productImages, favorites: favorites, brand: brand, user: user }
+        return { ...product, images: productImages, favorites: favorites, brand: brand, user: user, category: category }
       }),
   )
   console.log('__arr', arr)
@@ -184,8 +198,15 @@ export const myListings = async (req: Request, res: Response, next: NextFunction
             id: product.brand_id,
           },
         })
+      const category = await getConnection()
+        .getRepository(Categories)
+        .findOne({
+          where: {
+            id: product.categoriesSubs_id,
+          },
+        })
 
-      return { ...product, images: productImages, favorites: favorites, brand: brand }
+      return { ...product, images: productImages, favorites: favorites, brand: brand, category: category }
     }),
   )
   return res.status(httpStatus.OK).send({ success: true, message: 'success', data: arr })
