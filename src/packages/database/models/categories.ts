@@ -8,6 +8,9 @@ export class Categories extends BaseEntity {
   public id: number
 
   @Column('varchar')
+  public pid: number
+
+  @Column('varchar')
   public name_fr: string
 
   @Column('varchar')
