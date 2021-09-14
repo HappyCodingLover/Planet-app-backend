@@ -223,3 +223,26 @@ export const userListingsCount = async (req: Request, res: Response, next: NextF
     })
   return res.status(httpStatus.OK).send({ success: true, message: 'success', data: userProducts.length })
 }
+
+export const favListingsCount = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { userId } = req.body
+  const products = await getConnection().getRepository(Products).find()
+
+  const favProducts = await Promise.all(
+    products.map(async (product: any) => {
+      const favs = await getConnection()
+        .getRepository(Favorite)
+        .findOne({
+          where: {
+            id_product: product.id,
+            id_users: userId,
+            active: true,
+          },
+        })
+      if (favs !== undefined) return product
+      else return null
+    }),
+  )
+  const count = favProducts.filter((listing) => listing !== null).length
+  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: count })
+}

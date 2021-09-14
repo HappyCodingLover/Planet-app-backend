@@ -1,6 +1,6 @@
 import Router from 'express-promise-router'
 import {
-  listings, addProduct, myListings, userListingsCount, favListings
+  listings, addProduct, myListings, userListingsCount, favListings, favListingsCount
 } from '~/packages/api/resources/products/controller'
 
 const router = Router()
@@ -10,5 +10,6 @@ router.route('/favlistings').post(favListings)
 router.route('/userlistings').post(myListings)
 router.route('/addlistings').post(addProduct)
 router.route('/userListingsCount').post(userListingsCount)
+router.route('/fav-listings-count').post(favListingsCount)
 
 export default router
