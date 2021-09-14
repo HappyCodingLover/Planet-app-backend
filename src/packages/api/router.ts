@@ -8,6 +8,7 @@ import statusRouter from '~/packages/api/resources/product_status/index'
 import favoriteRouter from '~/packages/api/resources/favorite/index'
 import paymentRouter from '~/packages/api/resources/payment/index'
 import messagesRouter from '~/packages/api/resources/messages/index'
+import usersRouter from '~/packages/api/resources/users/index'
 
 const router = express.Router()
 
@@ -20,5 +21,6 @@ router.use('/api/status', statusRouter)
 router.use('/api/favorite', favoriteRouter)
 router.use('/api/payment', paymentRouter)
 router.use('/api/messages', messagesRouter)
+router.use('/api/users', usersRouter)
 
 export default router
