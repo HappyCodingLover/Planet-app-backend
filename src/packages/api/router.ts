@@ -7,6 +7,7 @@ import carrier_sizeRouter from '~/packages/api/resources/carrier_size/index'
 import statusRouter from '~/packages/api/resources/product_status/index'
 import favoriteRouter from '~/packages/api/resources/favorite/index'
 import paymentRouter from '~/packages/api/resources/payment/index'
+import messagesRouter from '~/packages/api/resources/messages/index'
 
 const router = express.Router()
 
@@ -18,5 +19,6 @@ router.use('/api/carrier_size', carrier_sizeRouter)
 router.use('/api/status', statusRouter)
 router.use('/api/favorite', favoriteRouter)
 router.use('/api/payment', paymentRouter)
+router.use('/api/messages', messagesRouter)
 
 export default router

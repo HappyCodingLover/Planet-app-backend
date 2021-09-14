@@ -3,7 +3,6 @@ import * as http from 'http'
 import config from '~/config'
 import { getConnection } from './packages/database'
 import server from './server'
-import { Server } from 'socket.io'
 
 const PORT = process.env.PORT || config.SERVER_PORT || '3000'
 
@@ -23,20 +22,6 @@ const currentServer = http.createServer(
   },*/
   server,
 )
-const io = new Server(currentServer, {
-  // ...
-})
-io.on('connection', (socket) => {
-  console.log('a user connected :D')
-  socket.on('send message', (msg) => {
-    console.log('send message', msg)
-    socket.join(socket.id)
-    io.emit('receive message', msg)
-    // io.to(socket.id).emit('receive message', msg)
-  })
-})
-
-// const io = require("socket.io").listen(server);
 
 currentServer.listen(PORT, onStart)
 // tslint:disable-next-line:no-console
