@@ -137,13 +137,13 @@ export const search = async (req: Request, res: Response, next: NextFunction): P
   let result
   if (categoryId) {
     result = await getConnection().getRepository(Products).createQueryBuilder('products')
-    .where('LOWER(products.name_fr) = LOWER(:keyword) AND products.categoriesSubs_id = :categoryId', {keyword, categoryId})
+    .where('LOWER(products.name_fr) like :keyword AND products.categoriesSubs_id = :categoryId', {keyword: `%${keyword.toLowerCase()}%`, categoryId})
     .getMany()
   }
   else result = await getConnection()
     .getRepository(Products)
     .createQueryBuilder('products')
-    .where('LOWER(products.name_fr) = LOWER(:keyword)', { keyword })
+    .where('LOWER(products.name_fr) like :keyword', { keyword: `%${keyword.toLowerCase()}%` })
     .getMany()
   const arr = await Promise.all(
     result.map(async (product: any) => {
