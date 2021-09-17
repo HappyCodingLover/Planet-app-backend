@@ -8,6 +8,8 @@ import { Brands } from '~/packages/database/models/brands'
 import { User } from '~/packages/database/models/user'
 import { Categories } from '~/packages/database/models/categories'
 
+const onetimeCount = 20
+
 export const userinfo = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { id } = req.body
   const user = await getConnection()
@@ -52,7 +54,7 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
   const arr = await Promise.all(
     favProducts
       .filter((prod) => prod !== null)
-      .slice(page * 5, (page + 1) * 5)
+      .slice(page * onetimeCount, (page + 1) * onetimeCount)
       .map(async (product: any) => {
         const productImages = await getConnection()
           .getRepository(ProductImages)
