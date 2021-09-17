@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import * as httpStatus from 'http-status'
-import { getConnection } from 'typeorm'
+import { getConnection, Like } from 'typeorm'
 import { Products } from '~/packages/database/models/products'
 import { ProductImages } from '~/packages/database/models/productImages'
 import { Favorite } from '~/packages/database/models/favorite'
@@ -8,11 +8,13 @@ import { Brands } from '~/packages/database/models/brands'
 import { User } from '~/packages/database/models/user'
 import { Categories } from '~/packages/database/models/categories'
 
+const onetimeCount = 20
+
 export const listings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { page } = req.body
   const [products, total] = await getConnection()
     .getRepository(Products)
-    .findAndCount({ skip: page * 5, take: 5 })
+    .findAndCount({ skip: page * onetimeCount, take: onetimeCount })
   const arr = await Promise.all(
     products.map(async (product: any) => {
       const productImages = await getConnection()
@@ -83,7 +85,7 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
   const arr = await Promise.all(
     favProducts
       .filter((prod) => prod !== null)
-      .slice(page * 5, (page + 1) * 5)
+      .slice(page * onetimeCount, (page + 1) * onetimeCount)
       .map(async (product: any) => {
         const productImages = await getConnection()
           .getRepository(ProductImages)
@@ -128,6 +130,61 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
   return res
     .status(httpStatus.OK)
     .send({ success: true, message: 'success', data: { data: arr, next: total > (page + 1) * 3 ? page + 1 : -1 } })
+}
+
+export const search = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { keyword, categoryId } = req.body
+  let result
+  if (categoryId) {
+    result = await getConnection().getRepository(Products).createQueryBuilder('products')
+    .where('LOWER(products.name_fr) = LOWER(:keyword) AND products.categoriesSubs_id = :categoryId', {keyword, categoryId})
+    .getMany()
+  }
+  else result = await getConnection()
+    .getRepository(Products)
+    .createQueryBuilder('products')
+    .where('LOWER(products.name_fr) = LOWER(:keyword)', { keyword })
+    .getMany()
+  const arr = await Promise.all(
+    result.map(async (product: any) => {
+      const productImages = await getConnection()
+        .getRepository(ProductImages)
+        .createQueryBuilder('productImages')
+        .where('productImages.product_id = :id', { id: product.id })
+        .getMany()
+      const favorites = await getConnection()
+        .getRepository(Favorite)
+        .find({
+          where: {
+            id_product: product.id,
+            active: true,
+          },
+        })
+      const brand = await getConnection()
+        .getRepository(Brands)
+        .findOne({
+          where: {
+            id: product.brand_id,
+          },
+        })
+      const user = await getConnection()
+        .getRepository(User)
+        .findOne({
+          where: {
+            id: product.user_id,
+          },
+        })
+      const category = await getConnection()
+        .getRepository(Categories)
+        .findOne({
+          where: {
+            id: product.categoriesSubs_id,
+          },
+        })
+      return { ...product, images: productImages, favorites: favorites, brand: brand, user: user, category: category }
+    }),
+  )
+  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: arr })
 }
 
 export const addProduct = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
