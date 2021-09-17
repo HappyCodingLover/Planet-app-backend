@@ -25,6 +25,12 @@ export class Products extends BaseEntity {
   @Column('int4')
   public user_id: number
 
+  @Column('int4')
+  public carrier_size_id: number
+
+  @Column('varchar')
+  public description: string
+
   @Column('bool')
   public active: boolean
 
