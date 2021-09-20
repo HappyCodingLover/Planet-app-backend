@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import * as httpStatus from 'http-status'
 import { getConnection } from 'typeorm'
 import { User } from '~/packages/database/models/user'
+import { Cities } from '~/packages/database/models/city'
+import { Regions } from '~/packages/database/models/regions'
+import { Departments } from '~/packages/database/models/department'
 import * as bcrypt from 'bcrypt'
 import config from '~/config'
 import * as jwt from 'jsonwebtoken'
@@ -43,6 +46,15 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     .createQueryBuilder('users')
     .where('users.email = :email', user)
     .getOne()
+  const city = await getConnection()
+    .getRepository(Cities)
+    .findOne({ where: { id: foundUser.cities_id } })
+  const department = await getConnection()
+    .getRepository(Departments)
+    .findOne({ where: { code: city.department_code } })
+  const region = await getConnection()
+    .getRepository(Regions)
+    .findOne({ where: { code: department.region_code } })
   if (!foundUser) {
     return res.status(httpStatus.OK).send({ success: false, message: 'email not exists' })
   }
@@ -58,6 +70,11 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       name: foundUser.name,
       firstname: foundUser.firstname,
       username: foundUser.username,
+      avatar: foundUser.avatar,
+      cities_id: foundUser.cities_id,
+      city: city,
+      department: department,
+      region: region,
     },
     config.AUTH.TOKEN_SECRET,
     {

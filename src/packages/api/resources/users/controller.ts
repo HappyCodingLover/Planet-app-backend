@@ -7,6 +7,10 @@ import { Favorite } from '~/packages/database/models/favorite'
 import { Brands } from '~/packages/database/models/brands'
 import { User } from '~/packages/database/models/user'
 import { Categories } from '~/packages/database/models/categories'
+import { http } from 'winston'
+import { Regions } from '~/packages/database/models/regions'
+import { Cities } from '~/packages/database/models/city'
+import { Departments } from '~/packages/database/models/department'
 
 const onetimeCount = 20
 
@@ -19,13 +23,11 @@ export const userinfo = async (req: Request, res: Response, next: NextFunction):
         id: id,
       },
     })
-  return res
-    .status(httpStatus.OK)
-    .send({
-      success: true,
-      message: 'success',
-      data: { id: user.id, name: user.name, firstname: user.firstname, username: user.username },
-    })
+  return res.status(httpStatus.OK).send({
+    success: true,
+    message: 'success',
+    data: { id: user.id, name: user.name, firstname: user.firstname, username: user.username },
+  })
 }
 
 export const favListings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
@@ -216,4 +218,42 @@ export const favListingsCount = async (req: Request, res: Response, next: NextFu
   )
   const count = favProducts.filter((listing) => listing !== null).length
   return res.status(httpStatus.OK).send({ success: true, message: 'success', data: count })
+}
+
+export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { id, avatar, username, cities_id } = req.body
+  const user = await getConnection().getRepository(User).save({
+    id: id,
+    avatar,
+    username,
+    cities_id,
+  })
+  const _user = await getConnection()
+    .getRepository(User)
+    .findOne({ where: { id: user.id } })
+  const city = await getConnection()
+    .getRepository(Cities)
+    .findOne({ where: { id: _user.cities_id } })
+  const department = await getConnection()
+    .getRepository(Departments)
+    .findOne({ where: { code: city.department_code } })
+  const region = await getConnection()
+    .getRepository(Regions)
+    .findOne({ where: { code: department.region_code } })
+  return res.status(httpStatus.OK).send({
+    success: true,
+    message: 'success',
+    data: {
+      id: _user.id,
+      email: _user.email,
+      name: _user.name,
+      firstname: _user.firstname,
+      username: _user.username,
+      avatar: _user.avatar,
+      cities_id: _user.cities_id,
+      city: city,
+      department: department,
+      region: region,
+    },
+  })
 }

@@ -37,6 +37,9 @@ export class User extends BaseEntity {
   @Column('int4')
   public cities_id: number
 
+  @Column('varchar')
+  public avatar: string
+
   @Column('bool')
   public active: boolean
 
