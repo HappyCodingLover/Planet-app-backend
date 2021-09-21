@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import * as httpStatus from 'http-status'
-import { getConnection, Like } from 'typeorm'
+import { getConnection, Not } from 'typeorm'
 import { Products } from '~/packages/database/models/products'
 import { ProductImages } from '~/packages/database/models/productImages'
 import { Favorite } from '~/packages/database/models/favorite'
@@ -11,10 +11,10 @@ import { Categories } from '~/packages/database/models/categories'
 const onetimeCount = 20
 
 export const listings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { page } = req.body
+  const { page, id } = req.body
   const [products, total] = await getConnection()
     .getRepository(Products)
-    .findAndCount({ skip: page * onetimeCount, take: onetimeCount })
+    .findAndCount({ skip: page * onetimeCount, take: onetimeCount, where: { user_id: Not(id) } })
   const arr = await Promise.all(
     products.map(async (product: any) => {
       const productImages = await getConnection()

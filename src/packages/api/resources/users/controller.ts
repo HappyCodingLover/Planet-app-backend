@@ -26,7 +26,7 @@ export const userinfo = async (req: Request, res: Response, next: NextFunction):
   return res.status(httpStatus.OK).send({
     success: true,
     message: 'success',
-    data: { id: user.id, name: user.name, firstname: user.firstname, username: user.username },
+    data: { id: user.id, name: user.name, firstname: user.firstname, username: user.username, email: user.email, avatar: user.avatar },
   })
 }
 
