@@ -46,17 +46,25 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     .createQueryBuilder('users')
     .where('users.email = :email', user)
     .getOne()
-  const city = await getConnection()
-    .getRepository(Cities)
-    .findOne({ where: { id: foundUser.cities_id } })
-  const department = await getConnection()
-    .getRepository(Departments)
-    .findOne({ where: { code: city.department_code } })
-  const region = await getConnection()
-    .getRepository(Regions)
-    .findOne({ where: { code: department.region_code } })
   if (!foundUser) {
     return res.status(httpStatus.OK).send({ success: false, message: 'email not exists' })
+  }
+  console.log(foundUser)
+  let city, department, region
+  if (!foundUser.cities_id) {
+    city = undefined
+    department = undefined
+    region = undefined
+  } else {
+    city = await getConnection()
+      .getRepository(Cities)
+      .findOne({ where: { id: foundUser.cities_id } })
+    department = await getConnection()
+      .getRepository(Departments)
+      .findOne({ where: { code: city.department_code } })
+    region = await getConnection()
+      .getRepository(Regions)
+      .findOne({ where: { code: department.region_code } })
   }
   const isPasswordCorrect = await bcrypt.compare(user.password, foundUser.password)
   if (!isPasswordCorrect) {
@@ -71,7 +79,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       firstname: foundUser.firstname,
       username: foundUser.username,
       avatar: foundUser.avatar,
-      cities_id: foundUser.cities_id,
+      cities_id: foundUser.cities_id ? foundUser.cities_id : undefined,
       city: city,
       department: department,
       region: region,
