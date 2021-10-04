@@ -10,6 +10,7 @@ import paymentRouter from '~/packages/api/resources/payment/index'
 import messagesRouter from '~/packages/api/resources/messages/index'
 import usersRouter from '~/packages/api/resources/users/index'
 import addressRouter from '~/packages/api/resources/address/index'
+import deliveryRouter from '~/packages/api/resources/delivery/index'
 
 const router = express.Router()
 
@@ -24,5 +25,6 @@ router.use('/api/payment', paymentRouter)
 router.use('/api/messages', messagesRouter)
 router.use('/api/users', usersRouter)
 router.use('/api/address', addressRouter)
+router.use('/api/delivery', deliveryRouter)
 
 export default router
