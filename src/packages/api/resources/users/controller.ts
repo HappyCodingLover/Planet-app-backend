@@ -285,3 +285,43 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
     },
   })
 }
+
+export const updateAddress = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { id, cities_id, address1, address2 } = req.body
+  const user = await getConnection().getRepository(User).save({
+    id: id,
+    address1,
+    address2,
+    cities_id,
+  })
+  const _user = await getConnection()
+    .getRepository(User)
+    .findOne({ where: { id: user.id } })
+  const city = await getConnection()
+    .getRepository(Cities)
+    .findOne({ where: { id: _user.cities_id } })
+  const department = await getConnection()
+    .getRepository(Departments)
+    .findOne({ where: { code: city.department_code } })
+  const region = await getConnection()
+    .getRepository(Regions)
+    .findOne({ where: { code: department.region_code } })
+  return res.status(httpStatus.OK).send({
+    success: true,
+    message: 'success',
+    data: {
+      id: _user.id,
+      email: _user.email,
+      name: _user.name,
+      firstname: _user.firstname,
+      username: _user.username,
+      avatar: _user.avatar,
+      address1: _user.address1,
+      address2: _user.address2,
+      cities_id: _user.cities_id,
+      city: city,
+      department: department,
+      region: region,
+    },
+  })
+}

@@ -43,6 +43,15 @@ export class User extends BaseEntity {
   @Column('bool')
   public active: boolean
 
+  @Column('varchar')
+  public address1: string
+
+  @Column('varchar')
+  public address2: string
+
+  @Column('int2')
+  public postcode: number
+  
   @Column('timestamp with time zone')
   public created_at: Timestamp
 

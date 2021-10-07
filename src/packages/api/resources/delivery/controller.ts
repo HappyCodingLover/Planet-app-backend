@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import httpStatus from 'http-status'
+import * as httpStatus from 'http-status'
 import * as path from 'path'
 import { exec } from 'child_process'
 
