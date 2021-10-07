@@ -49,8 +49,8 @@ export class User extends BaseEntity {
   @Column('varchar')
   public address2: string
 
-  @Column('int2')
-  public postcode: number
+  @Column('varchar')
+  public postcode: string
   
   @Column('timestamp with time zone')
   public created_at: Timestamp
