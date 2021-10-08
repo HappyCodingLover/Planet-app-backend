@@ -34,7 +34,7 @@ export class User extends BaseEntity {
   @Column('varchar')
   public description_fr: string
 
-  @Column('int4')
+  @Column('int8')
   public cities_id: number
 
   @Column('varchar')
