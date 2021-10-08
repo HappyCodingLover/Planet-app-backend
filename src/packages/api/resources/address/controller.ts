@@ -14,6 +14,14 @@ export const cities = async (req: Request, res: Response, next: NextFunction): P
   return res.status(httpStatus.OK).send({ success: true, message: 'success', data: cities })
 }
 
+export const getCityByPostcode = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { postcode } = req.body
+  const city = await getConnection()
+    .getRepository(Cities)
+    .findOne({ where: { zip_code: postcode } })
+  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: city })
+}
+
 export const regions = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const regions = await getConnection().getRepository(Regions).find()
   return res.status(httpStatus.OK).send({ success: true, message: 'success', data: regions })

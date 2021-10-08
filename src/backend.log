@@ -2180,3 +2180,17 @@
 [0mPOST /api/expoPushTokens [33m404[0m 177.513 ms - 158[0m
 [0mPOST /api/expoPushTokens [33m404[0m 8.758 ms - 158[0m
 [0mPOST /api/expoPushTokens [33m404[0m 14.282 ms - 158[0m
+[0mPOST /api/address/getCityByPostcode [31m500[0m 345.356 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 1010.059 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 20.126 ms - 158[0m
+[0mPOST /api/products/listings [31m500[0m 5952.178 ms - 51[0m
+[0mPOST /api/products/listings [31m500[0m 5950.286 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 4.680 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 4.399 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 10.720 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 4.179 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 3.897 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 3.689 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 58.302 ms - 158[0m
+[0mPOST /api/products/listings [31m500[0m 33.380 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 16.681 ms - 158[0m
