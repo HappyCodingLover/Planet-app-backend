@@ -17,7 +17,7 @@ import { exec } from 'child_process'
 const onetimeCount = 20
 
 export const mondialRelay = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const {countryCode, postcode} = req.body
+  const { countryCode, postcode } = req.body
   const phpFilePath = path.resolve(__dirname, '../../../../../mondial-relay-web-api/sample-parcelshop-search.php')
   exec(`php ${phpFilePath} ${countryCode} ${postcode}`, (err, stdout, stderr) => {
     if (err) {
@@ -290,12 +290,13 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
 }
 
 export const updateAddress = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { id, cities_id, address1, address2 } = req.body
+  const { id, cities_id, address1, address2, postcode } = req.body
   const user = await getConnection().getRepository(User).save({
     id: id,
     address1,
     address2,
     cities_id,
+    postcode,
   })
   const _user = await getConnection()
     .getRepository(User)
