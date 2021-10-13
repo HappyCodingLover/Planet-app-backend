@@ -47,7 +47,7 @@
 	$myShipment->DeliveryMode->ParcelShopContryCode = "FR";
 	
 	//set the pickup options
-	$myShipment->CollectMode = new ShipmentInfo() ;
+	$myShipment->CollectMode = new ShipmentInfo();
 	$myShipment->CollectMode->Mode = "CCC";
 	//parcel Shop ID when required
 	//$myShipment->CollectMode->ParcelShopId = "066974";

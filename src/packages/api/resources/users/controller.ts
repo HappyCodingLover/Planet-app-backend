@@ -13,6 +13,8 @@ import { Regions } from '~/packages/database/models/regions'
 import { Cities } from '~/packages/database/models/city'
 import { Departments } from '~/packages/database/models/department'
 import { exec } from 'child_process'
+import * as jwt from 'jsonwebtoken'
+import config from '~/config'
 
 const onetimeCount = 20
 
@@ -249,13 +251,25 @@ export const favListingsCount = async (req: Request, res: Response, next: NextFu
 }
 
 export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { id, avatar, username, cities_id } = req.body
-  const user = await getConnection().getRepository(User).save({
-    id: id,
-    avatar,
-    username,
-    cities_id,
-  })
+  const { id, avatar, username, cities_id, postcode } = req.body
+  let user
+  if (avatar) {
+    user = await getConnection().getRepository(User).save({
+      id: id,
+      avatar,
+      username,
+      cities_id,
+      postcode,
+    })
+  } else {
+    user = await getConnection().getRepository(User).save({
+      id: id,
+      username,
+      cities_id,
+      postcode,
+    })
+  }
+
   const _user = await getConnection()
     .getRepository(User)
     .findOne({ where: { id: user.id } })
@@ -268,10 +282,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
   const region = await getConnection()
     .getRepository(Regions)
     .findOne({ where: { code: department.region_code } })
-  return res.status(httpStatus.OK).send({
-    success: true,
-    message: 'success',
-    data: {
+  const token = jwt.sign(
+    {
       id: _user.id,
       email: _user.email,
       name: _user.name,
@@ -286,6 +298,15 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       department: department,
       region: region,
     },
+    config.AUTH.TOKEN_SECRET,
+    {
+      expiresIn: config.AUTH.TOKEN_EXPIRATION_TIME,
+    },
+  )
+  return res.status(httpStatus.OK).send({
+    success: true,
+    message: 'success',
+    data: token,
   })
 }
 
