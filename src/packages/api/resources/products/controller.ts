@@ -210,6 +210,7 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
           status_id: statusId,
           user_id: userId,
           description: description,
+          active: true,
         },
       ])
       .returning('id')
