@@ -251,7 +251,7 @@ export const favListingsCount = async (req: Request, res: Response, next: NextFu
 }
 
 export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { id, avatar, name, firstname, cities_id, postcode } = req.body
+  const { id, avatar, name, firstname, cities_id, postcode, address1, address2 } = req.body
   let user
   if (avatar) {
     user = await getConnection().getRepository(User).save({
@@ -261,6 +261,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       firstname,
       cities_id,
       postcode,
+      address1,
+      address2,
     })
   } else {
     user = await getConnection().getRepository(User).save({
@@ -269,6 +271,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       firstname,
       cities_id,
       postcode,
+      address1,
+      address2,
     })
   }
 
