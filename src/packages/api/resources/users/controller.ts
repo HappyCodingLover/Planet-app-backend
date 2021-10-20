@@ -56,6 +56,7 @@ export const userinfo = async (req: Request, res: Response, next: NextFunction):
       username: user.username,
       email: user.email,
       avatar: user.avatar,
+      phoneNumber: user.phoneNumber,
       description: user.description_fr,
     },
   })
@@ -252,7 +253,7 @@ export const favListingsCount = async (req: Request, res: Response, next: NextFu
 }
 
 export const updateProfile = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { id, avatar, name, firstname, cities_id, postcode, address1, address2 } = req.body
+  const { id, avatar, name, firstname, cities_id, postcode, address1, address2, description_fr, phoneNumber } = req.body
   let user
   if (avatar) {
     user = await getConnection().getRepository(User).save({
@@ -264,6 +265,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       postcode,
       address1,
       address2,
+      description_fr,
+      phoneNumber,
     })
   } else {
     user = await getConnection().getRepository(User).save({
@@ -274,6 +277,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       postcode,
       address1,
       address2,
+      description_fr,
+      phoneNumber,
     })
   }
 
@@ -297,6 +302,7 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       firstname: _user.firstname,
       username: _user.username,
       avatar: _user.avatar,
+      phoneNumber: _user.phoneNumber,
       description: _user.description_fr,
       address1: _user.address1,
       address2: _user.address2,
@@ -349,6 +355,7 @@ export const updateAddress = async (req: Request, res: Response, next: NextFunct
       firstname: _user.firstname,
       username: _user.username,
       avatar: _user.avatar,
+      phoneNumber: _user.phoneNumber,
       description: _user.description_fr,
       address1: _user.address1,
       address2: _user.address2,

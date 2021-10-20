@@ -40,6 +40,9 @@ export class User extends BaseEntity {
   @Column('varchar')
   public avatar: string
 
+  @Column('varchar')
+  public phoneNumber: string
+
   @Column('bool')
   public active: boolean
 
