@@ -56,6 +56,7 @@ export const userinfo = async (req: Request, res: Response, next: NextFunction):
       username: user.username,
       email: user.email,
       avatar: user.avatar,
+      description: user.description_fr,
     },
   })
 }
@@ -296,6 +297,7 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
       firstname: _user.firstname,
       username: _user.username,
       avatar: _user.avatar,
+      description: _user.description_fr,
       address1: _user.address1,
       address2: _user.address2,
       postcode: _user.postcode,
@@ -347,6 +349,7 @@ export const updateAddress = async (req: Request, res: Response, next: NextFunct
       firstname: _user.firstname,
       username: _user.username,
       avatar: _user.avatar,
+      description: _user.description_fr,
       address1: _user.address1,
       address2: _user.address2,
       postcode: _user.postcode,

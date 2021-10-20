@@ -79,6 +79,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       firstname: foundUser.firstname,
       username: foundUser.username,
       avatar: foundUser.avatar,
+      description: foundUser.description_fr,
       cities_id: foundUser.cities_id ? foundUser.cities_id : undefined,
       address1: foundUser.address1,
       address2: foundUser.address2,
