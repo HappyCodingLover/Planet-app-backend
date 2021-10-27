@@ -7,6 +7,7 @@ import { Favorite } from '~/packages/database/models/favorite'
 import { Brands } from '~/packages/database/models/brands'
 import { User } from '~/packages/database/models/user'
 import { Categories } from '~/packages/database/models/categories'
+import { Carrier_size } from '~/packages/database/models/carrier_size'
 
 const onetimeCount = 20
 
@@ -30,6 +31,9 @@ export const listings = async (req: Request, res: Response, next: NextFunction):
             active: true,
           },
         })
+      const carrier = await getConnection()
+        .getRepository(Carrier_size)
+        .findOne({ where: { id: product.carrier_size_id } })
       const brand = await getConnection()
         .getRepository(Brands)
         .findOne({
@@ -51,7 +55,15 @@ export const listings = async (req: Request, res: Response, next: NextFunction):
             id: product.categoriesSubs_id,
           },
         })
-      return { ...product, images: productImages, favorites: favorites, brand: brand, user: user, category: category }
+      return {
+        ...product,
+        images: productImages,
+        favorites: favorites,
+        brand: brand,
+        user: user,
+        category: category,
+        carrier: carrier,
+      }
     }),
   )
   return res
