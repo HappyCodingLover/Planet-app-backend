@@ -7,11 +7,11 @@
 	
 	
 	//set the credentials
-	$MRService->_Api_CustomerCode 	= "BDTEST  ";
-	$MRService->_Api_BrandId 		= "11";
-	$MRService->_Api_SecretKey  	= "MondiaL_RelaY_44";
-	$MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
-	$MRService->_Api_Password 		= "]dx1SP9aSrMs)faK]jXa";
+	$MRService->_Api_CustomerCode 	= "CC224ZXL";
+	$MRService->_Api_BrandId 		= "41";
+	$MRService->_Api_SecretKey  	= "N1mXUzVq";
+	$MRService->_Api_User 	    	= "apechou@gmail.com";
+	$MRService->_Api_Password 		= "Azerty74";
 	$MRService->_Api_Version 		= "2.0";
 	
 	
@@ -40,7 +40,7 @@
 	$myShipment = new ShipmentData();
 
 	//set the delivery options
-	$myShipment->DeliveryMode = new ShipmentInfo()  ;
+	$myShipment->DeliveryMode = new ShipmentInfo();
 	$myShipment->DeliveryMode->Mode = "LDP";
 	//parcel Shop ID when required
 	$myShipment->DeliveryMode->ParcelShopId = "066974";

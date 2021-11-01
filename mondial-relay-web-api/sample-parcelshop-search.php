@@ -12,8 +12,15 @@
 	$MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
 	$MRService->_Api_Password 		= "]dx1SP9aSrMs)faK]jXa";
 	$MRService->_Api_Version 		= "2.0";
+
+	// $MRService->_Api_CustomerCode 	= "CC224ZXL";
+	// $MRService->_Api_BrandId 		= "41";
+	// $MRService->_Api_SecretKey  	= "N1mXUzVq";
+	// $MRService->_Api_User 	    	= "apechou@gmail.com";
+	// $MRService->_Api_Password 		= "Azerty74";
+	// $MRService->_Api_Version 		= "2.0";
 	
-	$MRService->_Debug = false;
+	// $MRService->_Debug = false;
 
     // var_dump($argv);
 	/*

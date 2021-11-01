@@ -7,12 +7,19 @@
 	
 	
 	//set the credentials
+	// $MRService->_Api_CustomerCode 	= "BDTEST  ";
+	// $MRService->_Api_BrandId 		= "11";
+	// $MRService->_Api_SecretKey  	= "*****";
+	// $MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
+	// $MRService->_Api_Password 		= "****";
+	// $MRService->_Api_Version 		= "1.0";
+
 	$MRService->_Api_CustomerCode 	= "BDTEST  ";
 	$MRService->_Api_BrandId 		= "11";
-	$MRService->_Api_SecretKey  	= "*****";
+	$MRService->_Api_SecretKey  	= "MondiaL_RelaY_44";
 	$MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
-	$MRService->_Api_Password 		= "****";
-	$MRService->_Api_Version 		= "1.0";
+	$MRService->_Api_Password 		= "]dx1SP9aSrMs)faK]jXa";
+	$MRService->_Api_Version 		= "2.0";
 	
 	
 	$MRService->_Debug = false;
@@ -99,10 +106,11 @@
 	//creation with Internationnal API
 	$ShipmentDatas = $MRService->CreateShipment($myShipment);
 	
-	print_r($ShipmentDatas);
-	echo '<a href="'.$ShipmentDatas->LabelLink.'" >Download Stickers</a>';
+	// print_r($ShipmentDatas);
+	// echo '<a href="'.$ShipmentDatas->LabelLink.'" >Download Stickers</a>';
 	
-
+	$serialized = json_encode($ShipmentDatas);
+	print($serialized);
 	
 
 ?>

@@ -76,8 +76,6 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
 
   const [products, total] = await getConnection().getRepository(Products).findAndCount()
 
-  console.log('__products', products)
-
   const favProducts = await Promise.all(
     products.map(async (product: any) => {
       const favs = await getConnection()
@@ -137,7 +135,6 @@ export const favListings = async (req: Request, res: Response, next: NextFunctio
         return { ...product, images: productImages, favorites: favorites, brand: brand, user: user, category: category }
       }),
   )
-  console.log('__arr', arr)
 
   return res
     .status(httpStatus.OK)
