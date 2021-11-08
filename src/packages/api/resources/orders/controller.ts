@@ -5,63 +5,43 @@ import { User } from '~/packages/database/models/user'
 import { Orders } from '~/packages/database/models/order'
 import { OrderItems } from '~/packages/database/models/orderItems'
 import { OrderStatus } from '~/packages/database/models/orders_status'
-import * as bcrypt from 'bcrypt'
-import config from '~/config'
-import * as jwt from 'jsonwebtoken'
 import { Products } from '~/packages/database/models/products'
-
-// export const createOrder = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-//   const user = req.body
-//   const foundUser = await getConnection()
-//     .getRepository(User)
-//     .createQueryBuilder('users')
-//     .where('users.email = :email', user)
-//     .getOne()
-//   if (!foundUser) {
-//     return res.status(httpStatus.OK).send({ success: false, message: 'email not exists' })
-//   }
-//   const isPasswordCorrect = await bcrypt.compare(user.password, foundUser.password)
-//   if (!isPasswordCorrect) {
-//     return res.status(httpStatus.OK).send({ success: false, message: 'password mismatch' })
-//   }
-
-//   const token = jwt.sign(
-//     {
-//       email: foundUser.email,
-//       id: foundUser.id,
-//       name: foundUser.name,
-//       firstname: foundUser.firstname,
-//       username: foundUser.username,
-//     },
-//     config.AUTH.TOKEN_SECRET,
-//     {
-//       expiresIn: config.AUTH.TOKEN_EXPIRATION_TIME,
-//     },
-//   )
-//   res.status(httpStatus.OK).json({ success: true, token: token })
-// }
+import * as path from 'path'
+import { exec } from 'child_process'
 
 export const createOrder = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { userId, items } = req.body
-  const data = {
-    user_id: userId,
-    status: 0,
-    delivery_type: 0,
-  }
-  const result = await getConnection()
-    .createQueryBuilder()
-    .insert()
-    .into(Orders)
-    .values([data])
-    .returning('id')
-    .execute()
-  const arr = await Promise.all(
-    items.map(async (product: any) => {
-      return { ...product, order_id: result.identifiers[0].id }
-    }),
+  const { userId, items, parcelShopId, merchant } = req.body
+
+  const phpFilePath = path.resolve(__dirname, '../../../../../mondial-relay-web-api/sample-shipment-creation-v1.php')
+  exec(
+    `php ${phpFilePath} ${parcelShopId} ${merchant.address1} ${merchant.address2} ${merchant.address3} ${merchant.address4} ${merchant.city} ${merchant.countryCode}`,
+    async (err, stdout, stderr) => {
+      const xxx = stdout.substring(2)
+      const data1 = JSON.parse(xxx)
+      const data = {
+        user_id: userId,
+        status: 0,
+        delivery_type: 0,
+        shipmentNumber: data1.ShipmentNumber,
+        tracking: data1.TrackingLink,
+        labelLink: data1.LabelLink,
+      }
+      const result = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(Orders)
+        .values([data])
+        .returning('id')
+        .execute()
+      const arr = await Promise.all(
+        items.map(async (product: any) => {
+          return { ...product, order_id: result.identifiers[0].id }
+        }),
+      )
+      const result2 = await getConnection().createQueryBuilder().insert().into(OrderItems).values(arr).execute()
+      return res.status(httpStatus.OK).send({ success: true, message: 'success' })
+    },
   )
-  const result2 = await getConnection().createQueryBuilder().insert().into(OrderItems).values(arr).execute()
-  return res.status(httpStatus.OK).send({ success: true, message: 'success' })
 }
 
 export const myTotalTransactionAmount = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
@@ -97,13 +77,27 @@ export const transactionHistory = async (req: Request, res: Response): Promise<a
           const _product = await getConnection()
             .getRepository(Products)
             .findOne({ where: { id: item.product_id } })
-          const user = await getConnection()
-            .getRepository(User)
-            .findOne({ where: { id: _product.user_id } })
-          return { quantity: item.quantity, product: _product, user: user.username }
+          if (_product) {
+            const user = await getConnection()
+              .getRepository(User)
+              .findOne({ where: { id: _product.user_id } })
+            return { quantity: item.quantity, product: _product, user: user.username }
+          }
         }),
       )
-      return { id: order.id, items: products }
+      let totalAmount = 0
+      orderItems.forEach((item) => {
+        totalAmount += item.product_price * item.quantity
+      })
+      return {
+        id: order.id,
+        shipmentNumber: order.shipmentNumber,
+        status: order.status,
+        totalAmount: totalAmount,
+        trackingLink: order.tracking,
+        labelLink: order.labelLink,
+        items: products,
+      }
     }),
   )
   return res.status(httpStatus.OK).send({ success: true, message: 'success', data: arr })

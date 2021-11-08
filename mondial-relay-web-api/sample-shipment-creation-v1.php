@@ -7,32 +7,31 @@
 	
 	
 	//set the credentials
-	// $MRService->_Api_CustomerCode 	= "BDTEST  ";
-	// $MRService->_Api_BrandId 		= "11";
-	// $MRService->_Api_SecretKey  	= "*****";
-	// $MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
-	// $MRService->_Api_Password 		= "****";
-	// $MRService->_Api_Version 		= "1.0";
-
 	$MRService->_Api_CustomerCode 	= "BDTEST  ";
 	$MRService->_Api_BrandId 		= "11";
 	$MRService->_Api_SecretKey  	= "MondiaL_RelaY_44";
 	$MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
-	$MRService->_Api_Password 		= "]dx1SP9aSrMs)faK]jXa";
-	$MRService->_Api_Version 		= "2.0";
+	$MRService->_Api_Password 		= "****";
+	$MRService->_Api_Version 		= "1.0";
+
+	// $MRService->_Api_CustomerCode 	= "BDTEST  ";
+	// $MRService->_Api_BrandId 		= "11";
+	// $MRService->_Api_SecretKey  	= "MondiaL_RelaY_44";
+	// $MRService->_Api_User 	    	= "BDTEST@business-api.mondialrelay.com";
+	// $MRService->_Api_Password 		= "]dx1SP9aSrMs)faK]jXa";
+	// $MRService->_Api_Version 		= "2.0";
 	
 	
 	$MRService->_Debug = false;
-	
 	//set the merchant adress
 	//sender adress
 	$merchantAdress = new Adress();
-	$merchantAdress->Adress1 = "My book shop";
-	$merchantAdress->Adress2 = "";
-	$merchantAdress->Adress3 = "10 rue des écoles";
-	$merchantAdress->Adress4 = "";
+	$merchantAdress->Adress1 = $argv[2];
+	$merchantAdress->Adress2 = $argv[3];
+	$merchantAdress->Adress3 = $argv[4];
+	$merchantAdress->Adress4 = $argv[5];
 	$merchantAdress->PostCode = "59000";
-	$merchantAdress->City = "Lille";
+	$merchantAdress->City = $argv[6];
 	$merchantAdress->CountryCode = "FR";
 	$merchantAdress->PhoneNumber = "+33300000000" ;
 	$merchantAdress->PhoneNumber2 ="";
@@ -48,9 +47,10 @@
 
 	//set the delivery options
 	$myShipment->DeliveryMode = new ShipmentInfo()  ;
-	$myShipment->DeliveryMode->Mode = "LDP";
+	$myShipment->DeliveryMode->Mode = "LCC";
+	// $myShipment->DeliveryMode->Mode = "LDP";
 	//parcel Shop ID when required
-	$myShipment->DeliveryMode->ParcelShopId = "066974";
+	$myShipment->DeliveryMode->ParcelShopId = $argv[1];
 	$myShipment->DeliveryMode->ParcelShopContryCode = "FR";
 	
 	//set the pickup options

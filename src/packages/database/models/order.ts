@@ -19,6 +19,12 @@ export class Orders extends BaseEntity {
   @Column('varchar')
   public tracking: string
 
+  @Column('varchar')
+  public labelLink: string
+
+  @Column('varchar')
+  public shipmentNumber: string
+
   @Column('timestamp with time zone')
   public created_at: Timestamp
 
