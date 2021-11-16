@@ -2512,3 +2512,15 @@
 [0mPOST /api/expoPushTokens [33m404[0m 3.198 ms - 158[0m
 [0mPOST /api/expoPushTokens [33m404[0m 3.417 ms - 158[0m
 [0mPOST /api/expoPushTokens [33m404[0m 6.650 ms - 158[0m
+[0mPOST /api/delivery/search-mondialRelays [31m500[0m 151.360 ms - 51[0m
+[0mPOST /api/delivery/search-mondialRelays [31m500[0m 96.716 ms - 51[0m
+[0mPOST /api/delivery/search-mondialRelays [31m500[0m 246.000 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 10.541 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 11.773 ms - 158[0m
+[0mPOST /api/products/listings [31m500[0m 1148.414 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 7.456 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 6.470 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 7.636 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 6.319 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 5.358 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 5.018 ms - 158[0m
