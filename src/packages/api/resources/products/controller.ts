@@ -244,10 +244,15 @@ export const addProduct = async (req: Request, res: Response, next: NextFunction
 }
 
 export const myListings = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-  const { userId } = req.body
-  const userProducts = await getConnection()
+  const { userId, page } = req.body
+  // const [products, total] = await getConnection()
+  //   .getRepository(Products)
+  //   .findAndCount({ skip: page * onetimeCount, take: onetimeCount, where: { user_id: Not(id) } })
+  const [userProducts, total] = await getConnection()
     .getRepository(Products)
-    .find({
+    .findAndCount({
+      skip: page * onetimeCount,
+      take: onetimeCount,
       where: {
         user_id: userId,
       },
@@ -285,7 +290,9 @@ export const myListings = async (req: Request, res: Response, next: NextFunction
       return { ...product, images: productImages, favorites: favorites, brand: brand, category: category }
     }),
   )
-  return res.status(httpStatus.OK).send({ success: true, message: 'success', data: arr })
+  return res
+    .status(httpStatus.OK)
+    .send({ success: true, message: 'success', data: { data: arr, next: total > (page + 1) * 3 ? page + 1 : -1 } })
 }
 
 export const userListingsCount = async (req: Request, res: Response, next: NextFunction): Promise<any> => {

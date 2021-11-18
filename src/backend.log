@@ -2524,3 +2524,10 @@
 [0mPOST /api/expoPushTokens [33m404[0m 6.319 ms - 158[0m
 [0mPOST /api/expoPushTokens [33m404[0m 5.358 ms - 158[0m
 [0mPOST /api/expoPushTokens [33m404[0m 5.018 ms - 158[0m
+[0mPOST /api/expoPushTokens [33m404[0m 10.349 ms - 158[0m
+[0mPOST /api/products/listings [31m500[0m 395.974 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 4.325 ms - 158[0m
+[0mPOST /api/products/listings [31m500[0m 33.105 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 9.053 ms - 158[0m
+[0mPOST /api/products/listings [31m500[0m 127.007 ms - 51[0m
+[0mPOST /api/expoPushTokens [33m404[0m 4.365 ms - 158[0m
