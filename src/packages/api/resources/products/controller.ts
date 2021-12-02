@@ -279,6 +279,13 @@ export const myListings = async (req: Request, res: Response, next: NextFunction
             id: product.brand_id,
           },
         })
+      const user = await getConnection()
+        .getRepository(User)
+        .findOne({
+          where: {
+            id: product.user_id,
+          },
+        })
       const category = await getConnection()
         .getRepository(Categories)
         .findOne({
@@ -287,7 +294,7 @@ export const myListings = async (req: Request, res: Response, next: NextFunction
           },
         })
 
-      return { ...product, images: productImages, favorites: favorites, brand: brand, category: category }
+      return { ...product, images: productImages, favorites: favorites, brand: brand, category: category, user: user }
     }),
   )
   return res
